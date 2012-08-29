@@ -8,9 +8,30 @@ import java.util.*;
 /**
 * @author Katri Heikkinen
 */
+class Arvaus {
+        private ArrayList<Integer> arvaus;
+
+        public ArrayList<Integer> haeArvaus() {
+            return arvaus;
+        }
+
+        public TarkastusTulos haeTulos() {
+            return tulos;
+        }
+        private TarkastusTulos tulos;
+        
+        public Arvaus(ArrayList<Integer> arvaus, TarkastusTulos tulos) {
+            this.arvaus = arvaus;
+            this.tulos = tulos;
+        }
+        
+        
+    }
+
 public class Peli {
+    
     private RivinTarkastin tarkastin;
-    private ArrayList<ArrayList<Integer>> arvatutRivit;
+    private ArrayList<Arvaus> arvatutRivit;
     private int maxArvauksia;
     private boolean oikeinArvattu;
     
@@ -50,8 +71,8 @@ public class Peli {
         if(arvatutRivit.size() >= maxArvauksia) {
             throw new RuntimeException("Liian monta arvausta");
         }        
-        arvatutRivit.add(arvaus);
         TarkastusTulos tulos = tarkastin.arvaus(arvaus);
+        arvatutRivit.add(new Arvaus(arvaus, tulos));
         oikeinArvattu = tulos.haeKaikkiOikein();
         return tulos;
     }
@@ -68,7 +89,7 @@ public class Peli {
      * Palauttaa arvatut rivit
      * @return lista arvatuista riveistä
      */
-    public ArrayList<ArrayList<Integer>> haeArvatutRivit() {
+    public ArrayList<Arvaus> haeArvatutRivit() {
         return arvatutRivit;
     }
 }

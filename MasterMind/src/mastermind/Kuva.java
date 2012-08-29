@@ -7,6 +7,7 @@ package mastermind;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.JList;
@@ -18,8 +19,10 @@ import javax.swing.ListCellRenderer;
  */
 public class Kuva implements Icon {
     private int indeksi;
-    public Kuva(int indeksi) {
+    private char merkki;
+    public Kuva(char merkki, int indeksi) {
         this.indeksi = indeksi;
+        this.merkki = merkki;
     }
     
     @Override
@@ -35,14 +38,34 @@ public class Kuva implements Icon {
                 break;
             case 3 : vari = Color.YELLOW;
                 break;
-            case 4 : vari = Color.RED;
+            case 4 : vari = Color.GRAY;
                 break;
+            case 5 : vari = Color.PINK;
+                break;
+            case 6 : vari = Color.CYAN;
+                break;
+            case 7 : vari = Color.MAGENTA;
+                break;
+            case 8 : vari = Color.DARK_GRAY;
+                break;
+            case 9 : vari = Color.ORANGE;
+                break;
+            case 10 : vari = Color.LIGHT_GRAY;
+                break;
+                
+
             default :
                 vari = Color.BLACK;
            
         }
         g.setColor(vari);
-        g.fillRect(x ,y, 25 ,25);
+        if(merkki == 0) {
+            g.fillRect(x ,y, 25 ,25);
+        }
+        else {
+            g.setFont(new Font(null, Font.PLAIN, 20));
+            g.drawString(""+merkki, x, y+15);
+        }
         g.dispose();
     }
 

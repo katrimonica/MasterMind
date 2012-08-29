@@ -32,7 +32,10 @@ public class RivinTarkastinTest {
         ArrayList<Integer> arvattuRivi = null;
         RivinTarkastin instance = new RivinTarkastin(0);
         fail("Ei poikkeusta");        
-    }       
+    }   
+     /**
+     * Testaus arvauksesta jossa kaikki on oikein.
+     */
     
     @Test
     public void testArvausSama() {
@@ -43,10 +46,13 @@ public class RivinTarkastinTest {
         rivi.add(3);
         rivi.add(4);
         RivinTarkastin instance = new RivinTarkastin(5, rivi);
-        TarkastusTulos expResult = new TarkastusTulos(4,0);
+        TarkastusTulos expResult = new TarkastusTulos(4,0, true);
         TarkastusTulos result = instance.arvaus(rivi);
         assertEquals(expResult, result);
     }
+     /**
+     * Testaus arvauksesta jossa kaikki on väärin.
+     */
     
     @Test
     public void testArvausKaikkiVaarin() {
@@ -62,10 +68,13 @@ public class RivinTarkastinTest {
         rivi2.add(3);
         rivi2.add(4);
         RivinTarkastin instance = new RivinTarkastin(5, rivi);
-        TarkastusTulos expResult = new TarkastusTulos(0,0);
+        TarkastusTulos expResult = new TarkastusTulos(0,0,false);
         TarkastusTulos result = instance.arvaus(rivi2);
         assertEquals(expResult, result);
     }
+     /**
+     * Testaus arvauksesta, jossa kaikki on väärillä paikoilla.
+     */
     
     @Test
     public void testArvausKaikkiVaarillaPaikoilla() {
@@ -81,10 +90,13 @@ public class RivinTarkastinTest {
         rivi2.add(2);
         rivi2.add(1);
         RivinTarkastin instance = new RivinTarkastin(5, rivi);
-        TarkastusTulos expResult = new TarkastusTulos(0,4);
+        TarkastusTulos expResult = new TarkastusTulos(0,4,false);
         TarkastusTulos result = instance.arvaus(rivi2);
         assertEquals(expResult, result);
     }
+     /**
+     * Osa oikein arvauksen testaus.
+     */
     
     @Test
     public void testArvausOsaOikein() {
@@ -100,13 +112,13 @@ public class RivinTarkastinTest {
         rivi2.add(3);
         rivi2.add(2);
         RivinTarkastin instance = new RivinTarkastin(5, rivi);
-        TarkastusTulos expResult = new TarkastusTulos(2,2);
+        TarkastusTulos expResult = new TarkastusTulos(2,2,false);
         TarkastusTulos result = instance.arvaus(rivi2);
         assertEquals(expResult, result);
     }
     
     /**
-     * Test of arvaus method, of class RivinTarkastin.
+     * Väärän värin testaus, jolloin arvaus heittää poikkeuksen.
      */
     @Test(expected=RuntimeException.class)
     public void testArvausVaaraVari() {
@@ -122,7 +134,7 @@ public class RivinTarkastinTest {
         rivi2.add(3);
         rivi2.add(5);
         RivinTarkastin instance = new RivinTarkastin(5, rivi);
-        TarkastusTulos expResult = new TarkastusTulos(2,2);
+        TarkastusTulos expResult = new TarkastusTulos(2,2,false);
         TarkastusTulos result = instance.arvaus(rivi2);        
         fail("Ei poikkeusta");        
     }

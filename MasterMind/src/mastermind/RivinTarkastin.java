@@ -7,8 +7,8 @@ import java.util.*;
  * @author Katri Heikkinen
 */
 public class RivinTarkastin {    
-    public final int MERKKEJA = 4;
-
+    public final int PAIKKOJA = 4;
+    
     private int vareja;
     private ArrayList<Integer> rivi;
     private static Random satunnaislukuGen = new Random();
@@ -25,14 +25,15 @@ public class RivinTarkastin {
         
         this.vareja = vareja;    
         rivi = new ArrayList<Integer>();
-        for(int i=0; i<MERKKEJA; i++) {
+        for(int i=0; i<PAIKKOJA; i++) {
             rivi.add(satunnaislukuGen.nextInt(this.vareja));
         }        
     }
     
     /**
-     * Alustaa uuden annetulla rivillä.
+     * Alustaa uuden olion annetulla rivillä.
      * @param vareja värien määrä
+     * @param rivi annettu rivi
     */
     public RivinTarkastin(int vareja, ArrayList<Integer> rivi) {
         if(vareja < 1) {
@@ -58,10 +59,6 @@ public class RivinTarkastin {
     private int etsiOsumat(ArrayList<Integer> arvattuRivi, TreeSet<Integer> kasitelty, ArrayList<Integer> jaljella) {
        int osumia = 0;
        for(int i=0; i<rivi.size(); i++) {
-            if(arvattuRivi.get(i) < 0 || arvattuRivi.get(i) >= this.vareja) {
-                throw new RuntimeException("Rivillä vääriä värejä");
-            }
-        
             if(arvattuRivi.get(i) == rivi.get(i)) {
                 kasitelty.add(i);
                 osumia++;
@@ -128,7 +125,7 @@ public class RivinTarkastin {
         int osumia = etsiOsumat(arvattuRivi, kasitelty, jaljella);                        
         int sivuosumia = etsiSivuosumat(arvattuRivi, kasitelty, jaljella);
                 
-        return new TarkastusTulos(osumia, sivuosumia);
+        return new TarkastusTulos(osumia, sivuosumia, rivi.size() == osumia);
     }
     
     /**

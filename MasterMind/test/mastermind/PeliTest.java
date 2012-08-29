@@ -38,7 +38,7 @@ public class PeliTest {
     }
 
     /**
-     * Test of haeArvauksia method, of class Peli.
+     * Testi, joka testaa onko liikaa arvauksia.
      */
     @Test(expected=RuntimeException.class)
     public void testLiikaaArvauksia() {

@@ -6,6 +6,10 @@ package mastermind;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import mastermind.Peli;
+import mastermind.Tulokset.Tulos;
 
 /**
  *
@@ -16,19 +20,98 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     /**
      * Creates new form Kayttoliittyma
      */
-    public Kayttoliittyma() {
-        initComponents();
+    final char SMILEFACE = '\u263a';
+    final char SNOWFLAKE = '\u2744';
+    final char ROSETTE = '\u2740';
+    final char BLACKSTAR = '\u2605';
+    final char FISHEYE = '\u25c9';
+    final char AIRPLANE = '\u2708';
+    final char HOURGLASS = '\u231b';
+    final char TELEPHONE = '\u260e';
+    final char SCISSORS = '\u2702';
+    final char WHITEFLAG = '\u2690';
+    final char CIRCLE = '\u25cf';
+    final char BOX = '\u25a0';
+    final char KEYBOARD = '\u2328';
+    final char SKULL = '\u2620';
+    final char YING = '\u262f';
+    final char BLACKDIAMOND = '\u2756';
+    final char CIRCLESTAR = '\u272a';
+    final char ARROW = '\u2794';
+    final char CHECKMARK = '\u2611';
+    
+    private char merkki;
+    private int vareja;
+    private final UusiPeliDialog uusiPeliDialog;
+    private Tulokset tulokset;
+    private String pelaaja;
+    
+    
+    private void alustaCombo(JComboBox c) {
+        c.removeAllItems();
+        for(int i=1; i<=vareja; i++) {
+            c.addItem(""+i);
+        }
+        Renderoija renderer = new Renderoija(merkki);
+        c.setPreferredSize(new Dimension(10, 10));
+        c.setRenderer(renderer);
         
-        peli = new Peli(4,10);
-        Renderoija renderer = new Renderoija();
-        arvausCombo1.setPreferredSize(new Dimension(10, 10));
-        arvausCombo1.setRenderer(renderer);
-        arvausCombo2.setPreferredSize(new Dimension(10, 10));
-        arvausCombo2.setRenderer(renderer);
-        arvausCombo3.setPreferredSize(new Dimension(10, 10));
-        arvausCombo3.setRenderer(renderer);
-        arvausCombo4.setPreferredSize(new Dimension(10, 10));
-        arvausCombo4.setRenderer(renderer);
+    }
+    
+    public Kayttoliittyma() {
+        tulokset = new Tulokset("parhaat.txt");
+        initComponents();
+        pelaaja = "";
+        ArrayList<Character> merkit = new ArrayList<Character>();
+        merkit.add(SMILEFACE);
+        merkit.add(SNOWFLAKE);
+        merkit.add(ROSETTE);
+        merkit.add(BLACKSTAR);
+        merkit.add(FISHEYE);
+        merkit.add(AIRPLANE);
+        merkit.add(HOURGLASS);
+        merkit.add(TELEPHONE);
+        merkit.add(SCISSORS);
+        merkit.add(WHITEFLAG);
+        merkit.add(CIRCLE);
+        merkit.add(BOX);
+        merkit.add(KEYBOARD);
+        merkit.add(SKULL);
+        merkit.add(YING);
+        merkit.add(BLACKDIAMOND);
+        merkit.add(CIRCLESTAR);
+        merkit.add(CHECKMARK);
+        JOptionPane.showMessageDialog(this, "Tervetuloa pelaamaan MasterMind peliä!\nOle hyvä ja valitse haluamasi värimäärä (1-10) sekä näytettävä merkki.", "MasterMind", JOptionPane.PLAIN_MESSAGE);
+    
+        uusiPeliDialog = new UusiPeliDialog(this, true, merkit);
+        uusiPeli();
+    }
+    
+    private void uusiPeli() {
+        uusiPeliDialog.setVisible(true);
+        merkki = uusiPeliDialog.haeMerkki();
+        vareja = uusiPeliDialog.haeVareja();
+        peliPanel.asetaMerkki(merkki);
+        peli = new Peli(vareja,10);
+        alustaCombo(arvausCombo1);
+        alustaCombo(arvausCombo2);
+        alustaCombo(arvausCombo3);
+        alustaCombo(arvausCombo4);
+        peliPanel.asetaRivit(null);
+        peliPanel.repaint();
+    }        
+    
+    private void naytaParhaat() {
+        String s = "";
+        for(Tulos t : tulokset.haeLista(vareja)) {
+            s = s + t.haeNimi() + " " + t.haeArvauksia() + "\n";
+        }
+        if(s.length() == 0) {
+            s = "ei tuloksia";
+        }
+        
+        JOptionPane.showMessageDialog(this, s,"Parhaat tulokset",JOptionPane.PLAIN_MESSAGE);
+    
     }
 
     /**
@@ -42,8 +125,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
         arvausCombo1 = new javax.swing.JComboBox();
         arvausCombo2 = new javax.swing.JComboBox();
         arvausCombo3 = new javax.swing.JComboBox();
@@ -53,17 +134,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentsMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,24 +144,11 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 18, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 39, Short.MAX_VALUE)
-        );
-
-        jLabel1.setText("...");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 402, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 43, Short.MAX_VALUE)
         );
 
         arvausCombo1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
@@ -124,24 +184,20 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         );
         peliPanelLayout.setVerticalGroup(
             peliPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 227, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
+        fileMenu.setText("Peli");
 
         openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
+        openMenuItem.setText("Uusi peli");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMenuItem);
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -154,39 +210,17 @@ public class Kayttoliittyma extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
+        jMenu1.setText("Ohje");
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
+        jMenuItem1.setText("Ohjeet");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
-
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
-
-        menuBar.add(editMenu);
-
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
-
-        contentsMenuItem.setMnemonic('c');
-        contentsMenuItem.setText("Contents");
-        helpMenu.add(contentsMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
+        menuBar.add(jMenu1);
 
         setJMenuBar(menuBar);
 
@@ -198,12 +232,6 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(peliPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(arvausCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(arvausCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -212,30 +240,31 @@ public class Kayttoliittyma extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(arvausCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
-                        .addComponent(arvaaButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(arvaaButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(peliPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 335, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(peliPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addComponent(peliPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(arvausCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(arvausCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(arvausCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(arvausCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(arvaaButton))))
+                    .addComponent(arvausCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(arvausCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(arvausCombo3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(arvausCombo4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(arvaaButton))
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -251,11 +280,31 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         arvaus.add(arvausCombo2.getSelectedIndex());
         arvaus.add(arvausCombo3.getSelectedIndex());
         arvaus.add(arvausCombo4.getSelectedIndex());
-        System.out.println(arvaus);
         TarkastusTulos tulos = peli.arvaus(arvaus);
         peliPanel.asetaRivit(peli.haeArvatutRivit());
-        System.out.println(tulos);
         peliPanel.repaint();
+        if(tulos.haeKaikkiOikein()) {
+            if(tulokset.mahtuuko(vareja, peli.haeArvauksia())) {
+                pelaaja = JOptionPane.showInputDialog("Oikein arvattu! Pääsit listalle, anna nimesi", pelaaja);                
+                tulokset.lisaa(vareja, peli.haeArvauksia(), pelaaja);
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Oikein arvattu!");
+  
+            }
+            naytaParhaat();
+            uusiPeli();
+        }
+        else if(peli.haeArvauksia() == 10) {
+            ArrayList<Arvaus> rivi = peli.haeArvatutRivit();
+            rivi.add(new Arvaus(peli.haeOikeaRivi(), new TarkastusTulos(4,0,true)));
+            peliPanel.asetaRivit(rivi);
+            peliPanel.repaint();
+            JOptionPane.showMessageDialog(this, "Valitettavasti arvausyritykset loppuivat");
+            naytaParhaat();
+            uusiPeli();
+        }
+       
     }//GEN-LAST:event_arvaaButtonActionPerformed
 
     private void arvausCombo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arvausCombo1ActionPerformed
@@ -266,12 +315,34 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_arvausCombo3ActionPerformed
 
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        uusiPeli();
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JOptionPane.showMessageDialog(this, 
+         "Pelin ideana on arvailla toisen (koneen) arpomaa riviä,\n"+
+         "mikä koostuu eri värisistä merkeistä. Paikkoja on neljä ja\n"+
+         "värejä valinnan mukaan 1-10, jonka lisäksi voi pelata eri\n"+
+         "näköisillä merkeillä. Ohjelma arpoo ensin rivin ja pistää\n"+
+         "käyttäjää arvailemaan sitä. Käyttäjällä on enintään kymmenen\n"+
+         "arvausta. Jokaiselle arvaukselle ohjelma vastaa antamalla\n"+
+         "valkoisen \"merkin\" jokaista sellaista merkkiä kohden,\n"+
+         "joka on oikean värinen, mutta väärällä paikalla kertomatta\n"+
+         "tarkalleen mikä väreistä oli oikea ja mikä väärä.\n"+
+         "Jokaista oikealla paikalla olevaa ja oikean väristä\n"+
+         "merkkiä kohden kone antaa vihjeenä mustan \"merkin\".\n"+
+         "Ohjelma näyttää ruudulla vanhat arvaukset, joiden\n"+
+         "perusteella käyttäjä voi tehdä uuden arvauksen."               
+                , "Ohjeet", JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
@@ -301,29 +372,19 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arvaaButton;
     private javax.swing.JComboBox arvausCombo1;
     private javax.swing.JComboBox arvausCombo2;
     private javax.swing.JComboBox arvausCombo3;
     private javax.swing.JComboBox arvausCombo4;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
     private mastermind.PeliPanel peliPanel;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 }

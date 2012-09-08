@@ -5,27 +5,9 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class RivinTarkastinTest {
-    
-    public RivinTarkastinTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
-    
+    /**
+     * Testaa että värejä tulee olla enemmän kuin 0
+     */
     @Test(expected=RuntimeException.class)
     public void testArvausNollaVaria() {
         System.out.println("arvaus");

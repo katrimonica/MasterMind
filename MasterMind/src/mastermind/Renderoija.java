@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mastermind;
 
 import java.awt.Canvas;
@@ -11,15 +8,25 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- *
+ * Renderoija muodostaa ComboBoxiin sopivia kuvia
+ * 
  * @author katri
  */
 public class Renderoija extends JLabel implements ListCellRenderer {
     private char merkki;
+    /**
+     * Alustaa renderoijan
+     * @param merkki käytetty symbooli
+     */
     public Renderoija(char merkki) {
         super();
         this.merkki = merkki;
     }
+    /**
+     * Kutsutaan Comboboxia piirrettäessä. Määrittää 
+     * halutun merkin tietyn värisenä
+     * @return oma komponentti
+     */
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index,boolean isSelected,
                                        boolean cellHasFocus) {

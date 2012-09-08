@@ -14,7 +14,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- *
+ * Luokka joka toteuttaa ikonin piirtämisen ruudulle
  * @author katri
  */
 public class Kuva implements Icon {
@@ -25,6 +25,13 @@ public class Kuva implements Icon {
         this.merkki = merkki;
     }
     
+    /**
+     * Piirtää ikonin
+     * @param cmpnt komponentti
+     * @param grphcs graphics objekti mihin piirretään
+     * @param x x komponentti mihin piirretään
+     * @param y y komponentti mihin piirretään
+     */
     @Override
     public void paintIcon(Component cmpnt, Graphics grphcs, int x, int y) {
         Graphics g = grphcs.create();
@@ -69,11 +76,19 @@ public class Kuva implements Icon {
         g.dispose();
     }
 
+    /**
+     * Ikonin leveys
+     * @return palautettu leveys
+     */
     @Override
     public int getIconWidth() {
         return 25;
     }
 
+    /**
+     * Ikonen pituus
+     * @return palautettu pituus
+     */
     @Override
     public int getIconHeight() {
         return 25;

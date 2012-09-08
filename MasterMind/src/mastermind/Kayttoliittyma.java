@@ -12,14 +12,12 @@ import mastermind.Peli;
 import mastermind.Tulokset.Tulos;
 
 /**
- *
+ * Käyttöliitymä luokka
  * @author katri
  */
 public class Kayttoliittyma extends javax.swing.JFrame {
     private Peli peli;
-    /**
-     * Creates new form Kayttoliittyma
-     */
+    
     final char SMILEFACE = '\u263a';
     final char SNOWFLAKE = '\u2744';
     final char ROSETTE = '\u2740';
@@ -46,7 +44,10 @@ public class Kayttoliittyma extends javax.swing.JFrame {
     private Tulokset tulokset;
     private String pelaaja;
     
-    
+    /**
+     * Alustaa ComboBoxin omalla renderoijalla
+     * @param c ComboBox jota muokataan
+     */
     private void alustaCombo(JComboBox c) {
         c.removeAllItems();
         for(int i=1; i<=vareja; i++) {
@@ -58,6 +59,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         
     }
     
+    /**
+     * Luo Kayttoliittyma olion
+     */
     public Kayttoliittyma() {
         tulokset = new Tulokset("parhaat.txt");
         initComponents();
@@ -87,6 +91,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         uusiPeli();
     }
     
+    /**
+     * Alustaa käyttöliitymän kun uusi peli alkaa
+     */
     private void uusiPeli() {
         uusiPeliDialog.setVisible(true);
         merkki = uusiPeliDialog.haeMerkki();
@@ -101,6 +108,9 @@ public class Kayttoliittyma extends javax.swing.JFrame {
         peliPanel.repaint();
     }        
     
+    /**
+     * Näyttää parhaat tulokset
+     */
     private void naytaParhaat() {
         String s = "";
         for(Tulos t : tulokset.haeLista(vareja)) {

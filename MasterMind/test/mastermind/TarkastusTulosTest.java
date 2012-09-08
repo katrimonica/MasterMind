@@ -4,28 +4,8 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class TarkastusTulosTest {
-    
-    public TarkastusTulosTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
     /**
-     * Test of haeOsumat method, of class TarkastusTulos.
+     * Testaa että haeOsumat toimii
      */
     @Test
     public void testHaeOsumat() {
@@ -37,7 +17,7 @@ public class TarkastusTulosTest {
     }
 
     /**
-     * Test of haeSivuosumat method, of class TarkastusTulos.
+     * Testaa että haeSivuosumat toimii
      */
     @Test
     public void testHaeSivuosumat() {
@@ -49,7 +29,7 @@ public class TarkastusTulosTest {
     }
 
     /**
-     * Test of equals method, of class TarkastusTulos.
+     * Testaa että equals metodi toimii
      */
     @Test
     public void testEquals() {
@@ -62,10 +42,8 @@ public class TarkastusTulosTest {
     }
     
     /**
-     * Test of notEquals method, of class TarkastusTulos.
+     * Testaa että equals palauttaa false kun oliot eivät ole samanlaisia
      */
-        
-    
     @Test
     public void testNotEquals() {
         System.out.println("not equals");

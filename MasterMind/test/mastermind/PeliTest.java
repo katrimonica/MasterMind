@@ -17,26 +17,6 @@ import static org.junit.Assert.*;
  * @author katri
  */
 public class PeliTest {
-    
-    public PeliTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Testi, joka testaa onko liikaa arvauksia.
      */
@@ -66,11 +46,10 @@ public class PeliTest {
     }
 
     /**
-     * Test of haeArvauksia method, of class Peli.
+     * Testaa pidetäänkö oikeaa riviä oikeana
      */
     @Test(expected=RuntimeException.class)
     public void testOikeaArvaus() {
-        System.out.println("Liikaa arvauksia");
         Peli instance = null;
         ArrayList<Integer> oikeaRivi = null;
         try{
